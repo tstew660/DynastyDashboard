@@ -28,14 +28,16 @@ export function UserNameform() {
 
     let handleLeagueChange = (e) => {
         const leagueId = e.target.value;
-        dispatch(updateLeague(leagueId));
+        const leagueName = userModel.leagues.find((x) => {
+            return x.league_id == leagueId}).name;
+        dispatch(updateLeague({leagueId: leagueId, leagueName: leagueName }));
         navigate("/overview/" + leagueId);
       }
 
       
 
     return (
-        <Container>
+        <Container className="text-light" bg="dark">
             <Row className="justify-content-md-center mb-4" xs="auto">
                 <Col>
                     <div>Welcome to Dynasty Dashboard! Please enter your Sleeper Username below to get started.</div>
@@ -52,7 +54,7 @@ export function UserNameform() {
                                 </Form.Group>
                             </Col>
                             <Col xs="auto">
-                                <Button class="btn btn-primary mb-2" type="submit">Submit</Button>
+                                <Button class="btn btn-primary mb-2" variant="secondary" type="submit">Submit</Button>
                             </Col>
                         </Row>
                     </Form>
@@ -60,12 +62,12 @@ export function UserNameform() {
             </Row>
             {leagueLoaded ?
             showSpinner ? <Spinner></Spinner> :
-            <Row className="" xs="auto">
+            <Row className="" xs="auto" >
                 <Col sm>
-                    <Form className="mb-4" onChange={handleLeagueChange}>
-                    <Form.Select>
+                    <Form className="mb-4" variant="dark" onChange={handleLeagueChange}>
+                    <Form.Select variant="dark">
                         <option value=""> -- Select a League -- </option>
-                        {userModel && userModel?.leagues?.map((selectedLeague) => <option value={selectedLeague.league_id} key={selectedLeague.league_id}>{selectedLeague.name}</option>)}
+                        {userModel && userModel?.leagues?.map((selectedLeague) => <option value={selectedLeague.league_id} key={selectedLeague.league_id} name={selectedLeague.name} >{selectedLeague.name}</option>)}
                     </Form.Select>
                     </Form>
                 </Col>

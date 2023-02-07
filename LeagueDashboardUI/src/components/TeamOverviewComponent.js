@@ -177,7 +177,7 @@ export default function TeamOverviewComponent() {
         
 
         return (
-          <Card style={{ width: '18rem' }}>
+          <Card bg="dark" className="text-white">
             <Card.Body>
               <Card.Title>{position.position}</Card.Title>
               <Card.Text>
@@ -200,8 +200,8 @@ export default function TeamOverviewComponent() {
 
     return (
         <Container>
-            <Row className="justify-content-md-center mb-4" xs="auto">
-                <h1>{team.user.metadata.team_name}</h1>
+            <Row className="justify-content-md-center mb-4 text-light" xs="auto">
+                <h2>{team.user.metadata.team_name}</h2>
             </Row>
             <Row className="mb-4" xs="auto">
                 <Form.Select onChange={handleTeamChange}>
