@@ -14,16 +14,17 @@ export function UserNameform() {
     const [showSpinner, setShowSpinner] = useState(false);
     const [leagueLoaded, setLeagueLoaded] = useState(false);
     let navigate = useNavigate();
+    const endpoint = ApiEndpoint();
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = data => {
+        setLeagueLoaded(true)
         setShowSpinner(true);
-        GetData(`${ApiEndpoint}/User/${data.UserName}`)
+        GetData(`${endpoint}/User/${data.UserName}`)
         .then((userResponse) => setUser(userResponse))
         .finally(() => {
-            setShowSpinner(false);
-            setLeagueLoaded(true)})
+            setShowSpinner(false);})
 
     }
 
