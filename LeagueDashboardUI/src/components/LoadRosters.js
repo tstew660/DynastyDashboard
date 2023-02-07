@@ -1,7 +1,8 @@
 import { GetData } from "./ApiAccess";
+import { ApiEndpoint } from "../ApiConfig";
 
 export const LoadRosters = async ({ params }) => {
     console.log(params.leagueId);
-    const res = await GetData(`https://localhost:44380/api/League/${params.leagueId}`);
+    const res = await GetData(`${ApiEndpoint}/League/${params.leagueId}`);
     return res;
   }

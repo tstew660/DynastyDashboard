@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { updateLeague } from './Leagues.js';
 import { useDispatch } from 'react-redux';
+import { ApiEndpoint } from '../ApiConfig.js';
 
 export function UserNameform() {
 
@@ -18,7 +19,7 @@ export function UserNameform() {
 
     const onSubmit = data => {
         setShowSpinner(true);
-        GetData(`https://localhost:44380/api/User/${data.UserName}`)
+        GetData(`${ApiEndpoint}/User/${data.UserName}`)
         .then((userResponse) => setUser(userResponse))
         .finally(() => {
             setShowSpinner(false);
