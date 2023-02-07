@@ -1,6 +1,10 @@
-import { Table } from 'react-bootstrap';
+import { Table, Container, Row, Col } from 'react-bootstrap';
 import { GetData } from './ApiAccess.js'
 import { useLoaderData, useOutletContext} from 'react-router-dom';
+import { BestTeam } from './BestTeam.js';
+import { WorstTeam } from './WorstTeam.js';
+import { BestRedraftTeam } from './BestRedraftTeam.js';
+import { WorstRedraftTeam } from './WorstRedraftTeam.js';
 
 export function LeagueSummaryTable() {
   const isSuperFlex = useOutletContext();
@@ -11,11 +15,26 @@ export function LeagueSummaryTable() {
       : scoredRosters.sort((a, b) => (a.ktc_total_oneQB > b.ktc_total_oneQB) ? -1 : 1)
     
     return (
-      <div>
+      <Container>
+      <div className='text-light'>
+        <Row className="mb-4">
+        <Col >
+        <BestTeam teams={leagueObject.rosters}></BestTeam>
+        </Col>
+        <Col >
+        <WorstTeam teams={leagueObject.rosters}></WorstTeam>
+        </Col>
+        <Col >
+        <BestRedraftTeam teams={leagueObject.rosters}></BestRedraftTeam>
+        </Col>
+        <Col >
+        <WorstRedraftTeam teams={leagueObject.rosters}></WorstRedraftTeam>
+        </Col>
+        </Row>
         <div>
             {scoredRosters.length !== 0 ?
               <div>
-                <Table striped bordered hover variant="light">
+                <Table striped bordered hover variant="dark">
                   <thead>
                     <tr>
                       <th>Team Name</th>
@@ -47,6 +66,7 @@ export function LeagueSummaryTable() {
         </div>
 
       </div>
+      </Container>
     );
   }
 

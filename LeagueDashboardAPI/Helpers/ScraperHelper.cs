@@ -191,7 +191,7 @@ namespace LeagueDashboardAPI.Helpers
                     unaddedPlayerList.Add(firstName + " " + lastName);
                     continue;
                 }
-                var rank = Convert.ToInt32((maxRank - Convert.ToDouble(player.rank_ave)) * 25);
+                var rank = Convert.ToInt32(((maxRank - Convert.ToDouble(player.rank_ave)) * 25) / 2);
                 rankedPlayer.fantasy_pros_rank_sf = rank;
                 await _playersCollection.UpdateOneAsync(
                     x => x.player_id == rankedPlayer.player_id,
@@ -231,7 +231,7 @@ namespace LeagueDashboardAPI.Helpers
                     unaddedPlayerList.Add(firstName + " " + lastName);
                     continue;
                 }
-                var rank = Convert.ToInt32((maxRank - Convert.ToDouble(player.rank_ave)) * 25);
+                var rank = Convert.ToInt32(((maxRank - Convert.ToDouble(player.rank_ave)) * 25)/2);
                 rankedPlayer.fantasy_pros_rank_oneQB = rank;
                 await _playersCollection.UpdateOneAsync(
                     x => x.player_id == rankedPlayer.player_id,

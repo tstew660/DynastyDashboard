@@ -1,8 +1,9 @@
-import { Navbar, Container, Nav, Spinner, Form } from 'react-bootstrap';
+import { Navbar, Container, Nav, Spinner, Form,  } from 'react-bootstrap';
 import { Outlet, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from 'react-router-dom';
+
 
 export function MainNavigation() {
   const [isSuperFlex, setIsSuperFlex] = useState(false);
@@ -13,7 +14,7 @@ export function MainNavigation() {
 
     function ScoringSwitch() {
         return (
-          <Form>
+          <Form className='text-light'>
             <Form.Check 
               type="switch"
               id="custom-switch"
@@ -26,7 +27,7 @@ export function MainNavigation() {
       }
     return (
     <div>
-    <Navbar expand={false} bg="light">
+    <Navbar expand={false} bg="dark" variant="dark">
         <Container>
           <Link to="/">
             <Navbar.Brand href="/">Dynasty Dashboard</Navbar.Brand>
@@ -44,7 +45,10 @@ export function MainNavigation() {
       </Navbar>
       <div class="mainContent">
       {navigation.state === "loading" ? <Spinner></Spinner> :
-      <Outlet context={isSuperFlex}/>}
+      <div>
+      <h1 className='text-light'>{stateValue.leagueName}</h1>
+      <Outlet context={isSuperFlex} />
+      </div>}
       </div>
       </div>
     );
