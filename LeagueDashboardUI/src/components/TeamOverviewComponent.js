@@ -1,6 +1,6 @@
 import React from "react"
 import { useLoaderData, useParams, useOutletContext  } from "react-router-dom"
-import { Card, Row, Col, Container } from 'react-bootstrap';
+import { Card, Row, Col, Container, ListGroup, Badge } from 'react-bootstrap';
 import { useDispatch } from "react-redux";
 import { updateTeam } from "./Leagues";
 import { Form } from "react-bootstrap";
@@ -167,28 +167,49 @@ export default function TeamOverviewComponent() {
         return positionDictionary;
     }
 
+    function nameCase(string){
+        return string[0].toUpperCase() + string.slice(1).toLowerCase();
+      }
+
     function PlayerCard({players, position}) {
         let filteredList = [];
-        console.log(players);
-        console.log(position);
         filteredList = players.filter((player) => {
             return player.lineupRole.includes(position.position) && player.lineupRole.charAt(player.lineupRole.length - 1) == position.number;
         })
         
-
+        const starter = filteredList.shift();
         return (
-          <Card bg="dark" className="text-white">
-            <Card.Body>
-              <Card.Title>{position.position}</Card.Title>
-              <Card.Text>
-                {filteredList.map((player) => 
-                    isSuperFlex ?
-                    <p>{player.first_name + " " + player.last_name + " (" + player.fantasy_pros_rank_sf +")"}</p> :
-                    <p>{player.first_name + " " + player.last_name + " (" + player.fantasy_pros_rank_oneQB +")"}</p>
-                )}
-              </Card.Text>
-            </Card.Body>
-          </Card>
+            <Card style={{ width: '15rem', height: "100%" }} bg="dark" className="text-white">
+                <Card.Header as="h5">{position.position}</Card.Header>
+                <Card.Body style={{ textAlign: "left" }}>
+                    {isSuperFlex ?
+                        <Card.Title className="d-flex justify-content-between align-items-start">
+                            {nameCase(starter.first_name) + " " + nameCase(starter.last_name)}
+                            <Badge bg="secondary" pill>
+                                {starter.fantasy_pros_rank_sf}
+                            </Badge>
+                        </Card.Title> :
+                        <Card.Title className="d-flex justify-content-between align-items-start">
+                            {nameCase(starter.first_name) + " " + nameCase(starter.last_name)}
+                            <Badge bg="secondary" pill>
+                                {starter.fantasy_pros_rank_oneQB}
+                            </Badge>
+                        </Card.Title>}
+                    <ListGroup>
+                        {filteredList.map((player) =>
+                            isSuperFlex ?
+                                <ListGroup.Item variant="dark" className="d-flex justify-content-between align-items-start">{nameCase(player.first_name) + " " + nameCase(player.last_name)}
+                                    <Badge bg="secondary" pill>
+                                        {player.fantasy_pros_rank_sf}
+                                    </Badge></ListGroup.Item> :
+                                <ListGroup.Item variant="dark" className="d-flex justify-content-between align-items-start">{nameCase(player.first_name) + " " + nameCase(player.last_name)}
+                                    <Badge bg="secondary" pill>
+                                        {player.fantasy_pros_rank_oneQB}
+                                    </Badge></ListGroup.Item>
+                        )}
+                    </ListGroup>
+                </Card.Body>
+            </Card>
         );
       }
 
@@ -199,23 +220,23 @@ export default function TeamOverviewComponent() {
       }
 
     return (
-        <Container>
-            <Row className="justify-content-md-center mb-4 text-light" xs="auto">
-                <h2>{team.user.metadata.team_name}</h2>
+        <Container className="text-light">
+            <Row className="mb-2">
+                <h3>{team.user.metadata.team_name}</h3>
             </Row>
-            <Row className="mb-4" xs="auto">
+            <Row className="mb-4">
                 <Form.Select onChange={handleTeamChange}>
                     <option value=""> -- Select a Team -- </option>
                     {rostersObject && rostersObject?.map((user) => <option value={user.roster_id} key={user.roster_id}>{user.user.metadata.team_name}</option>)}
                 </Form.Select>
             </Row>
-            <Row className="mb-4" xs="auto">
-                <Container>
+            <Row className="mb-4">
+                <Container className="cardContainer">
                     <Row className="mb-4">
-                        {rankedPositions.map((position) => 
-                        <Col >
-                            < PlayerCard players={teamList} position={position} />
-                        </Col>)}
+                        {rankedPositions.map((position) =>
+                            <Col className="mb-2" >
+                                < PlayerCard players={teamList} position={position} />
+                            </Col>)}
                     </Row>
                 </Container>
             </Row>

@@ -15,57 +15,54 @@ export function LeagueSummaryTable() {
       : scoredRosters.sort((a, b) => (a.ktc_total_oneQB > b.ktc_total_oneQB) ? -1 : 1)
     
     return (
-      <Container>
-      <div className='text-light'>
-        <Row className="mb-4">
-        <Col >
-        <BestTeam teams={leagueObject.rosters}></BestTeam>
-        </Col>
-        <Col >
-        <WorstTeam teams={leagueObject.rosters}></WorstTeam>
-        </Col>
-        <Col >
-        <BestRedraftTeam teams={leagueObject.rosters}></BestRedraftTeam>
-        </Col>
-        <Col >
-        <WorstRedraftTeam teams={leagueObject.rosters}></WorstRedraftTeam>
-        </Col>
+      <Container className='text-light'>
+        <Row className="mb-2" fluid>
+        <Container>
+          <Col className="mb-2" >
+            <BestTeam teams={leagueObject.rosters}></BestTeam>
+          </Col>
+          <Col className="mb-2">
+            <WorstTeam teams={leagueObject.rosters}></WorstTeam>
+          </Col>
+          <Col className="mb-2">
+            <BestRedraftTeam teams={leagueObject.rosters}></BestRedraftTeam>
+          </Col>
+          <Col className="mb-2">
+            <WorstRedraftTeam teams={leagueObject.rosters}></WorstRedraftTeam>
+          </Col>
+          </Container>
         </Row>
-        <div>
-            {scoredRosters.length !== 0 ?
-              <div>
-                <Table striped bordered hover variant="dark">
-                  <thead>
-                    <tr>
-                      <th>Team Name</th>
-                      <th>Team Dynasty Value</th>
-                      <th>Team Redraft Value</th>
-                      <th>QB Value</th>
-                      <th>RB Value</th>
-                      <th>WR Value</th>
-                      <th>TE Value</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {scoredRosters && scoredRosters?.map((x) =>
-                      <tr>
-                        <td>{x.user.metadata.team_name}</td>
-                        <td>{isSuperFlex ? x.ktc_total_sf : x.ktc_total_oneQB}</td>
-                        <td>{isSuperFlex ? x.fp_total_sf : x.fp_total_oneQB}</td>
-                        <td>{isSuperFlex ? x.qb_total_sf : x.qb_total_oneQB}</td>
-                        <td>{isSuperFlex ? x.rb_total_sf : x.rb_total_oneQB}</td>
-                        <td>{isSuperFlex ? x.wr_total_sf : x.wr_total_oneQB}</td>
-                        <td>{isSuperFlex ? x.te_total_sf : x.te_total_oneQB}</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </Table>
-              </div> :
-              <div>No league data to display</div>
+        <Row className="mb-4">
+          {scoredRosters.length !== 0 ?
+            <Table striped bordered hover variant="dark" responsive>
+              <thead>
+                <tr>
+                  <th>Team Name</th>
+                  <th>Team Dynasty Value</th>
+                  <th>Team Redraft Value</th>
+                  <th>QB Value</th>
+                  <th>RB Value</th>
+                  <th>WR Value</th>
+                  <th>TE Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {scoredRosters && scoredRosters?.map((x) =>
+                  <tr>
+                    <td>{x.user.metadata.team_name}</td>
+                    <td>{isSuperFlex ? x.ktc_total_sf : x.ktc_total_oneQB}</td>
+                    <td>{isSuperFlex ? x.fp_total_sf : x.fp_total_oneQB}</td>
+                    <td>{isSuperFlex ? x.qb_total_sf : x.qb_total_oneQB}</td>
+                    <td>{isSuperFlex ? x.rb_total_sf : x.rb_total_oneQB}</td>
+                    <td>{isSuperFlex ? x.wr_total_sf : x.wr_total_oneQB}</td>
+                    <td>{isSuperFlex ? x.te_total_sf : x.te_total_oneQB}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table> :
+            <div>No league data to display</div>
           }
-        </div>
-
-      </div>
+        </Row>
       </Container>
     );
   }

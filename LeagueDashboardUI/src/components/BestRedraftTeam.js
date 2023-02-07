@@ -12,7 +12,7 @@ export const BestRedraftTeam = ({teams}) => {
             <Card bg="dark">
                 <Card.Title>Best Redraft Team</Card.Title>
                 <Card.Text>
-                    {bestTeam.user.metadata.team_name + " :)"} 
+                    {bestTeam.user.metadata.team_name + "🏈"} 
                 </Card.Text>
             </Card>
         </div>

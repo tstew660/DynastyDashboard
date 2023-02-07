@@ -12,7 +12,7 @@ export const WorstTeam = ({teams}) => {
             <Card bg="dark">
                 <Card.Title>Worst Dynasty Team</Card.Title>
                 <Card.Text>
-                    {worstTeam.user.metadata.team_name + " :("} 
+                    {worstTeam.user.metadata.team_name + "🗑️"} 
                 </Card.Text>
             </Card>
         </div>

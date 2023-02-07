@@ -46,7 +46,7 @@ export function MainNavigation() {
       <div class="mainContent">
       {navigation.state === "loading" ? <Spinner></Spinner> :
       <div>
-      <h1 className='text-light'>{stateValue.leagueName}</h1>
+      <h1 className='text-light mb-4'>{stateValue.leagueName}</h1>
       <Outlet context={isSuperFlex} />
       </div>}
       </div>
