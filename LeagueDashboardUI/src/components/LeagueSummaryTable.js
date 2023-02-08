@@ -5,6 +5,7 @@ import { BestTeam } from './BestTeam.js';
 import { WorstTeam } from './WorstTeam.js';
 import { BestRedraftTeam } from './BestRedraftTeam.js';
 import { WorstRedraftTeam } from './WorstRedraftTeam.js';
+import { LeagueBarChart } from './LeagueBarChart.js';
 
 export function LeagueSummaryTable() {
   const isSuperFlex = useOutletContext();
@@ -31,6 +32,9 @@ export function LeagueSummaryTable() {
             <WorstRedraftTeam teams={leagueObject.rosters}></WorstRedraftTeam>
           </Col>
           </Container>
+        </Row>
+        <Row>
+          <LeagueBarChart teams={scoredRosters} />
         </Row>
         <Row className="mb-4">
           {scoredRosters.length !== 0 ?
