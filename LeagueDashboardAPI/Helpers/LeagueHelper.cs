@@ -63,7 +63,7 @@ namespace LeagueDashboardAPI.Helpers
 
             league.rosters = rosters;
             await MapPlayersToRoster(rosters);
-            await MapUsersToRoster(rosters, users);
+            MapUsersToRoster(rosters, users);
             await MapPicksToRosters(rosters, picks, Convert.ToInt32(league.season));
 
             return league;
@@ -134,7 +134,7 @@ namespace LeagueDashboardAPI.Helpers
             }
         }
 
-        private async Task MapUsersToRoster(List<Roster> rosters, List<User> users)
+        private void MapUsersToRoster(List<Roster> rosters, List<User> users)
         {
             foreach (var roster in rosters)
             {
@@ -148,31 +148,56 @@ namespace LeagueDashboardAPI.Helpers
 
         private async Task MapPicksToRosters(List<Roster> rosters, List<Pick> tradedPicks, int leagueYear)
         {
-            for (int year = leagueYear + 1; year < leagueYear + 4; year++)
+            var picksFromDB = await _playersCollection
+                .Find(x => x.position == "PICK").ToListAsync();
+
+            //set stock picks
+            foreach (var roster in rosters)
             {
-                //set stock picks
-                foreach (var roster in rosters)
+                int rosterId = Convert.ToInt32(roster.roster_id);
+                var stockPicks = new List<Pick>();
+                for (int year = leagueYear + 1; year < leagueYear + 4; year++)
                 {
-                    var stockPicks = new List<Pick>();
                     for (int i = 1; i <= 4; i++)
                     {
                         stockPicks.Add(new Pick
                         {
                             season = year.ToString(),
                             roster_id = roster.roster_id,
+                            owner_id = roster.roster_id,
                             round = i
                         });
                     }
-                    roster.picks = stockPicks; 
+                    
+                    
                 }
-
+                stockPicks.AddRange(tradedPicks.Where(x => x.owner_id == rosterId && x.roster_id != rosterId && Convert.ToInt32(x.season) > leagueYear));
                 foreach (var pick in tradedPicks)
                 {
-                    rosters.SingleOrDefault(x => x.roster_id == pick.previous_owner_id).picks.Remove(pick);
-                    rosters.SingleOrDefault(x => x.roster_id == pick.owner_id).picks.Add(pick);
-
+                    //if the traded pick belongs to this roster but is not owned by this roster
+                    if(pick.owner_id != Convert.ToInt32(roster.roster_id) && pick.roster_id == Convert.ToInt32(roster.roster_id))
+                    {
+                        var removePick = stockPicks.SingleOrDefault(x => x.owner_id != pick.owner_id && x.roster_id == pick.roster_id && x.round == pick.round && x.season == pick.season);
+                        stockPicks.Remove(removePick);
+                    }
                 }
+                foreach (var stockPick in stockPicks)
+                {
+                    string convertedRound = ConvertRound(stockPick.round);
+                    stockPick.rank_sf = (int)picksFromDB.SingleOrDefault(x => x.first_name == stockPick.season && x.last_name == convertedRound).ktc_rank_sf;
+                    stockPick.rank_oneQB = (int)picksFromDB.SingleOrDefault(x => x.first_name == stockPick.season && x.last_name == convertedRound).ktc_rank_oneQB;
+                }
+                roster.picks = stockPicks.OrderBy(x => Convert.ToInt32(x.season)).ThenBy(x => x.round).ToList(); 
             }
         }
+
+        private static string ConvertRound(int round) => round switch
+        {
+            1 => "1st",
+            2 => "2nd",
+            3 => "3rd",
+            4 => "4th",
+            _ => "Can't Convert"
+        };
     }
 }

@@ -18,7 +18,7 @@
 }
 
 .mainContent {
-  padding: 50px;
+  padding: 20px;
   padding-top: 10px;
 }
 
@@ -40,4 +40,8 @@ a:-webkit-any-link {
 
 .cardContainer {
   align-items: stretch;
+}
+
+.canvas-container {
+  height: 60vh;
 }

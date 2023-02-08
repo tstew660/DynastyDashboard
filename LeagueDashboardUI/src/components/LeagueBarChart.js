@@ -30,13 +30,14 @@ export function LeagueBarChart({teams}) {
             text: "League Totals",
           },
         },
-        responsive: true,
+        maintainAspectRatio : false,
         scales: {
           x: {
             stacked: true,
           },
           y: {
             stacked: true,
+            display: false
           },
         },
       };
@@ -67,9 +68,17 @@ export function LeagueBarChart({teams}) {
               label: 'TE',
               data: isSuperFlex ? teams.map((team) => team.te_total_sf): teams.map((team) => team.te_total_oneQB),
               backgroundColor: 'green',
+            },
+            {
+              label: 'Draft Cap',
+              data: isSuperFlex ? teams.map((team) => team.dp_total_sf): teams.map((team) => team.dp_total_oneQB),
+              backgroundColor: 'orange',
             }
           ],
         };
       
-  return <Bar options={options} data={data} />;
+  return (
+    <article className="canvas-container">
+  <Bar options={options} data={data} />
+  </article>);
 }

@@ -38,7 +38,7 @@ namespace LeagueDashboardAPI.Helpers
         public async Task<List<string>> ScrapeForRankings(string sfSite, string oneQBSite, string site)
         {
             var activeStandardPlayers = await _playersCollection
-                .Find(x => x.position == "qb" || x.position == "rb" || x.position == "wr" || x.position == "te")
+                .Find(x => x.position == "qb" || x.position == "rb" || x.position == "wr" || x.position == "te" || x.position == "PICK")
                 .Project<Player>(Builders<Player>.Projection.Exclude(x => x._id)).ToListAsync();
             var unaddedPlayerList = new List<string>();
             switch (site)
@@ -105,6 +105,23 @@ namespace LeagueDashboardAPI.Helpers
                         new UpdateOptions { IsUpsert = false }
                     );
                 }
+                else
+                {
+                    var rank = Convert.ToInt32(player.SelectSingleNode(".//div[@class='single-ranking-wrapper']//div[@class='value']//p").InnerText);
+                    var pickName = player.SelectSingleNode(".//div[@class='player-name']//a").InnerText;
+                    if(pickName.Contains("Mid"))
+                    {
+                        var splitName = pickName.Split(' ', 3);
+                        string pickYear = splitName[0];
+                        string pickRound = splitName[2];
+                        var rankedPick = activeStandardPlayers.SingleOrDefault(x => x.first_name == pickYear && x.last_name == pickRound);
+                        await _playersCollection.UpdateOneAsync(
+                        x => x.first_name == rankedPick.first_name && x.last_name == rankedPick.last_name,
+                        Builders<Player>.Update.Set(p => p.ktc_rank_sf, rank),
+                        new UpdateOptions { IsUpsert = true }
+                    );
+                    }
+                }
 
             }
 
@@ -157,6 +174,23 @@ namespace LeagueDashboardAPI.Helpers
                         Builders<Player>.Update.Set(p => p.ktc_rank_oneQB, rank),
                         new UpdateOptions { IsUpsert = false }
                     );
+                }
+                else
+                {
+                    var rank = Convert.ToInt32(player.SelectSingleNode(".//div[@class='single-ranking-wrapper']//div[@class='value']//p").InnerText);
+                    var pickName = player.SelectSingleNode(".//div[@class='player-name']//a").InnerText;
+                    if (pickName.Contains("Mid"))
+                    {
+                        var splitName = pickName.Split(' ', 3);
+                        string pickYear = splitName[0];
+                        string pickRound = splitName[2];
+                        var rankedPick = activeStandardPlayers.SingleOrDefault(x => x.first_name == pickYear && x.last_name == pickRound);
+                        await _playersCollection.UpdateOneAsync(
+                        x => x.first_name == rankedPick.first_name && x.last_name == rankedPick.last_name,
+                        Builders<Player>.Update.Set(p => p.ktc_rank_oneQB, rank),
+                        new UpdateOptions { IsUpsert = true }
+                    );
+                    }
                 }
             }
 

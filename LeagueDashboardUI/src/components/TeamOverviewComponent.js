@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { updateTeam } from "./Leagues";
 import { Form } from "react-bootstrap";
 import { useState } from "react";
+import DraftPicks from "./DraftPicks";
 
 export default function TeamOverviewComponent() {
     const dispatch = useDispatch();
@@ -240,6 +241,7 @@ export default function TeamOverviewComponent() {
                     </Row>
                 </Container>
             </Row>
+            <DraftPicks team={team} />
         </Container>
     )
   }

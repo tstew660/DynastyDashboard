@@ -12,6 +12,8 @@ namespace LeagueDashboardAPI.Models
         public int roster_id { get; set; }
         public int previous_owner_id { get; set; }
         public int owner_id { get; set; }
+        public int rank_sf { get; set; }
+        public int rank_oneQB { get; set; }
     }
 
 }

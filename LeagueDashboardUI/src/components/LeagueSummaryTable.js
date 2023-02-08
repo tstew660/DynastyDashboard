@@ -34,7 +34,9 @@ export function LeagueSummaryTable() {
           </Container>
         </Row>
         <Row>
+          <Col>
           <LeagueBarChart teams={scoredRosters} />
+          </Col>
         </Row>
         <Row className="mb-4">
           {scoredRosters.length !== 0 ?
@@ -48,6 +50,7 @@ export function LeagueSummaryTable() {
                   <th>RB Value</th>
                   <th>WR Value</th>
                   <th>TE Value</th>
+                  <th>Draft Value</th>
                 </tr>
               </thead>
               <tbody>
@@ -60,6 +63,7 @@ export function LeagueSummaryTable() {
                     <td>{isSuperFlex ? x.rb_total_sf : x.rb_total_oneQB}</td>
                     <td>{isSuperFlex ? x.wr_total_sf : x.wr_total_oneQB}</td>
                     <td>{isSuperFlex ? x.te_total_sf : x.te_total_oneQB}</td>
+                    <td>{isSuperFlex ? x.dp_total_sf : x.dp_total_oneQB}</td>
                   </tr>
                 )}
               </tbody>
@@ -79,6 +83,20 @@ export function LeagueSummaryTable() {
       let rbScore = 0;
       let wrScore = 0;
       let teScore = 0;
+      let dPScore = 0;
+      roster.picks.forEach((pick) => {
+        if(superFlex)
+          {
+            if(pick.rank_sf != null) {
+              dPScore += pick.rank_sf;
+            }  
+          }
+          else {
+            if(pick.rank_oneQB != null) {
+              dPScore += pick.rank_oneQB;
+            } 
+          }   
+      })
       roster.playersList.forEach((player) => {
         if(player.position === "qb") {
           if(superFlex)
@@ -138,12 +156,14 @@ export function LeagueSummaryTable() {
         roster.rb_total_sf = rbScore;
         roster.wr_total_sf = wrScore;
         roster.te_total_sf = teScore;
+        roster.dp_total_sf = dPScore;
       }
       else {
         roster.qb_total_oneQB = qbScore;
         roster.rb_total_oneQB = rbScore;
         roster.wr_total_oneQB = wrScore;
         roster.te_total_oneQB = teScore;
+        roster.dp_total_oneQB = dPScore;
       }
       
     })
