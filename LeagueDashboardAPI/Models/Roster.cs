@@ -21,6 +21,7 @@ namespace LeagueDashboardAPI.Models
         public int ktc_total_oneQB { get; set; }
         public int fp_total_sf { get; set; }
         public int fp_total_oneQB { get; set; }
+        public List<Pick> picks { get; set; }
     }
 
     public class Settings
@@ -36,5 +37,6 @@ namespace LeagueDashboardAPI.Models
         public int fpts_against { get; set; }
         public int fpts { get; set; }
     }
+
 
 }

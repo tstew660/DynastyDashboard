@@ -37,9 +37,11 @@ namespace LeagueDashboardAPI.Helpers
             var league = new League();
             var rosters = new List<Roster>();
             var users = new List<User>();
+            var picks = new List<Pick>();
             string rostersEndpoint = "league/" + leagueId + "/rosters/";
             string usersEndpoint = "league/" + leagueId + "/users/";
             string leagueEndpoint = "league/" + leagueId;
+            string picksEndpoint = "league/" + leagueId + "/traded_picks/";
             using (HttpClient client = _sleeperClient)
             {
                 var leagueResponse = await APIGetRequestAsync(leagueEndpoint, client);
@@ -53,11 +55,16 @@ namespace LeagueDashboardAPI.Helpers
                 var userResponse = await APIGetRequestAsync(usersEndpoint, client);
 
                 users = System.Text.Json.JsonSerializer.Deserialize<List<User>>(userResponse);
+
+                var tradedPicksResponse = await APIGetRequestAsync(picksEndpoint, client);
+
+                picks = System.Text.Json.JsonSerializer.Deserialize<List<Pick>>(tradedPicksResponse);
             }
 
             league.rosters = rosters;
             await MapPlayersToRoster(rosters);
             await MapUsersToRoster(rosters, users);
+            await MapPicksToRosters(rosters, picks, Convert.ToInt32(league.season));
 
             return league;
 
@@ -129,13 +136,41 @@ namespace LeagueDashboardAPI.Helpers
 
         private async Task MapUsersToRoster(List<Roster> rosters, List<User> users)
         {
-
             foreach (var roster in rosters)
             {
                 roster.user = users.SingleOrDefault(x => x.user_id == roster.owner_id);
                 if(roster.user.metadata.team_name == null)
                 {
                     roster.user.metadata.team_name = roster.user.display_name;
+                }
+            }
+        }
+
+        private async Task MapPicksToRosters(List<Roster> rosters, List<Pick> tradedPicks, int leagueYear)
+        {
+            for (int year = leagueYear + 1; year < leagueYear + 4; year++)
+            {
+                //set stock picks
+                foreach (var roster in rosters)
+                {
+                    var stockPicks = new List<Pick>();
+                    for (int i = 0; i <= 4; i++)
+                    {
+                        stockPicks.Add(new Pick
+                        {
+                            season = year.ToString(),
+                            roster_id = roster.roster_id,
+                            round = i
+                        });
+                    }
+                    roster.picks = stockPicks; 
+                }
+
+                foreach (var pick in tradedPicks)
+                {
+                    rosters.SingleOrDefault(x => x.roster_id == pick.previous_owner_id).picks.Remove(pick);
+                    rosters.SingleOrDefault(x => x.roster_id == pick.owner_id).picks.Add(pick);
+
                 }
             }
         }

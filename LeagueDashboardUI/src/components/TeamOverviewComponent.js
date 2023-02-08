@@ -181,7 +181,7 @@ export default function TeamOverviewComponent() {
         return (
             <Card style={{ width: '15rem', height: "100%" }} bg="dark" className="text-white">
                 <Card.Header as="h5">{position.position}</Card.Header>
-                <Card.Body style={{ textAlign: "left" }}>
+                <Card.Body style={{ textAlign: "left", width: "100%" }}>
                     {isSuperFlex ?
                         <Card.Title className="d-flex justify-content-between align-items-start">
                             {nameCase(starter.first_name) + " " + nameCase(starter.last_name)}
