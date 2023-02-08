@@ -154,7 +154,7 @@ namespace LeagueDashboardAPI.Helpers
                 foreach (var roster in rosters)
                 {
                     var stockPicks = new List<Pick>();
-                    for (int i = 0; i <= 4; i++)
+                    for (int i = 1; i <= 4; i++)
                     {
                         stockPicks.Add(new Pick
                         {
