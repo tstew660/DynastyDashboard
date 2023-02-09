@@ -13,6 +13,8 @@ import {
 } from "react-router-dom"
 import TeamOverviewComponent from './components/TeamOverviewComponent';
 import { LoadRosters } from './components/LoadRosters';
+import { LoadPlayers } from './components/LoadPlayers';
+import { PlayersTable } from './components/PlayersTable';
 
 export default function App() {
 
@@ -34,6 +36,11 @@ export default function App() {
           path: "/team/:leagueId/:teamId",
           loader: LoadRosters,
           element: <TeamOverviewComponent />
+        },
+        {
+          path: "/players/",
+          loader: LoadPlayers,
+          element: <PlayersTable />
         }
       ]
     }
