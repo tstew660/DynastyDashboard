@@ -39,6 +39,7 @@ export function MainNavigation() {
               <Link to="/">Home</Link>
               <Link to={`/overview/${stateValue.leagueId}`}>League Overview</Link>
               <Link to={`/team/${stateValue.leagueId}/${stateValue.teamId}`}>Team Overview</Link>
+              <Link to={`/players/`}>Player Rankings</Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

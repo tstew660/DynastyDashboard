@@ -34,13 +34,13 @@ export function LeagueSummaryTable() {
           </Container>
         </Row>
         <Row>
-          <Col>
+          <Col className="mb-4">
           <LeagueBarChart teams={scoredRosters} />
           </Col>
         </Row>
         <Row className="mb-4">
           {scoredRosters.length !== 0 ?
-            <Table striped bordered hover variant="dark" responsive>
+            <Table striped bordered hover variant="dark" responsive className='table'>
               <thead>
                 <tr>
                   <th>Team Name</th>
