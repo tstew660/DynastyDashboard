@@ -6,6 +6,8 @@ import { updateTeam } from "./Leagues";
 import { Form } from "react-bootstrap";
 import { useState } from "react";
 import DraftPicks from "./DraftPicks";
+import { TeamPieChart } from "./TeamPieChart";
+import { TeamHeader } from "./TeamHeader";
 
 export default function TeamOverviewComponent() {
     const dispatch = useDispatch();
@@ -222,14 +224,14 @@ export default function TeamOverviewComponent() {
 
     return (
         <Container className="text-light">
-            <Row className="mb-2">
-                <h3>{team.user.metadata.team_name}</h3>
-            </Row>
             <Row className="mb-4">
                 <Form.Select onChange={handleTeamChange}>
                     <option value=""> -- Select a Team -- </option>
                     {rostersObject && rostersObject?.map((user) => <option value={user.roster_id} key={user.roster_id}>{user.user.metadata.team_name}</option>)}
                 </Form.Select>
+            </Row>
+            <Row className="mb-4">
+                <TeamHeader className="mb-2" teams={rostersObject} team={team} />
             </Row>
             <Row className="mb-4">
                 <Container className="cardContainer">
@@ -241,7 +243,9 @@ export default function TeamOverviewComponent() {
                     </Row>
                 </Container>
             </Row>
-            <DraftPicks team={team} />
+            <Row>
+                <TeamPieChart team={team} />
+            </Row>
         </Container>
     )
   }

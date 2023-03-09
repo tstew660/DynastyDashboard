@@ -6,6 +6,8 @@ import { WorstTeam } from './WorstTeam.js';
 import { BestRedraftTeam } from './BestRedraftTeam.js';
 import { WorstRedraftTeam } from './WorstRedraftTeam.js';
 import { LeagueBarChart } from './LeagueBarChart.js';
+import { SellTheFarm } from './SellTheFarm.js';
+import { GoAllIn } from './GoAllIn.js';
 
 export function LeagueSummaryTable() {
   const isSuperFlex = useOutletContext();
@@ -30,6 +32,12 @@ export function LeagueSummaryTable() {
           </Col>
           <Col className="mb-2">
             <WorstRedraftTeam teams={leagueObject.rosters}></WorstRedraftTeam>
+          </Col>
+          <Col className="mb-2">
+            <SellTheFarm teams={leagueObject.rosters}></SellTheFarm>
+          </Col>
+          <Col className="mb-2">
+            <GoAllIn teams={leagueObject.rosters}></GoAllIn>
           </Col>
           </Container>
         </Row>

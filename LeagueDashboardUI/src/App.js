@@ -15,6 +15,7 @@ import TeamOverviewComponent from './components/TeamOverviewComponent';
 import { LoadRosters } from './components/LoadRosters';
 import { LoadPlayers } from './components/LoadPlayers';
 import { PlayersTable } from './components/PlayersTable';
+import ErrorPage from './components/ErrorPage';
 
 export default function App() {
 
@@ -22,6 +23,7 @@ export default function App() {
     {
       path: "/",
       element: < MainNavigation />,
+      errorElement: <ErrorPage />,
       children: [
         {
           path: "/",
@@ -29,7 +31,7 @@ export default function App() {
         },
         {
           path: "/overview/:leagueId",
-          loader: LoadRosters,
+          loader: LoadRosters,          
           element: <LeagueSummaryTable  />  
         },
         {
